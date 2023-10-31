@@ -6,14 +6,14 @@ export async function login(providerName: string) {
   return signInWithPopup(auth, provider)
     .then((result) => {
       const user = result.user;
-      console.log(user);
+      console.log('login success', user);
       return user;
     })
     .catch(console.error);
 }
 
 export async function logout() {
-  return signOut(auth).then(() => null);
+  return signOut(auth).catch(console.error);
 }
 
 function getProvider(providerName: string) {
