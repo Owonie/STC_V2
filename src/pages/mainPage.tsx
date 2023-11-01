@@ -1,11 +1,11 @@
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { authState, userState } from '../states/accountState';
 import { login, logout } from '../services/authService';
 
 const MainPage = () => {
   //TODO: 커스텀 훅으로 분리하기
   const [isAuthed, setIsAuthed] = useRecoilState(authState);
-  const [, setUser] = useRecoilState(userState);
+  const setUser = useSetRecoilState(userState);
 
   const onLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (isAuthed) {
