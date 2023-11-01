@@ -1,30 +1,34 @@
-//import { useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { authState } from '../states/authState';
 import { login, logout } from '../services/authService';
 
 const MainPage = () => {
-  // const [user, setUser] = useState(null);
+  const [auth, setAuth] = useRecoilState(authState);
 
   const onLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const user = login(e.currentTarget.name);
-    console.log('login!', user);
+    login(e.currentTarget.name).then((user) => {
+      if (user) setAuth(user.displayName);
+    });
   };
 
   const onLogout = async () => {
     logout();
-    console.log('sign out successful');
-    // setUser(null);
+    setAuth(null);
   };
 
   return (
     <div>
       home
-      <button onClick={onLogin} name='Google'>
-        Google
-      </button>
-      <button onClick={onLogin} name='Github'>
-        Github
-      </button>
-      <button onClick={onLogout}>logout</button>
+      <h4>{auth}</h4>
+      <div>
+        <button onClick={onLogin} name='Google'>
+          Google
+        </button>
+        <button onClick={onLogin} name='Github'>
+          Github
+        </button>
+        <button onClick={onLogout}>logout</button>
+      </div>
     </div>
   );
 };
