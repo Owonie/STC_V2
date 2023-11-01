@@ -1,34 +1,49 @@
 import { useRecoilState } from 'recoil';
-import { authState } from '../states/authState';
+import { authState, userState } from '../states/accountState';
 import { login, logout } from '../services/authService';
 
 const MainPage = () => {
-  const [auth, setAuth] = useRecoilState(authState);
+  //TODO: 커스텀 훅으로 분리하기
+  const [isAuthed, setIsAuthed] = useRecoilState(authState);
+  const [, setUser] = useRecoilState(userState);
 
   const onLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (isAuthed) {
+      console.log('이미 로그인 된 상태입니다!');
+      return;
+    }
     login(e.currentTarget.name).then((user) => {
-      if (user) setAuth(user.displayName);
+      if (user) {
+        const { displayName, photoURL, accessToken } = user;
+        setUser({
+          displayName: displayName ?? '',
+          photoURL: photoURL ?? '',
+          accessToken: accessToken ?? '',
+        });
+        setIsAuthed(true);
+      }
     });
   };
 
   const onLogout = async () => {
     logout();
-    setAuth(null);
+    setIsAuthed(false);
   };
 
   return (
     <div>
-      home
-      <h4>{auth}</h4>
-      <div>
-        <button onClick={onLogin} name='Google'>
-          Google
-        </button>
-        <button onClick={onLogin} name='Github'>
-          Github
-        </button>
+      {!isAuthed ? (
+        <div>
+          <button onClick={onLogin} name='Google'>
+            Google
+          </button>
+          <button onClick={onLogin} name='Github'>
+            Github
+          </button>
+        </div>
+      ) : (
         <button onClick={onLogout}>logout</button>
-      </div>
+      )}
     </div>
   );
 };

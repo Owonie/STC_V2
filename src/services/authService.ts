@@ -1,12 +1,26 @@
-import { signOut, signInWithPopup } from 'firebase/auth';
+import {
+  signOut,
+  signInWithPopup,
+  GoogleAuthProvider,
+  GithubAuthProvider,
+} from 'firebase/auth';
 import { auth, authProvider } from './firebase';
 
 export async function login(providerName: string) {
   const provider = getProvider(providerName);
+
   return signInWithPopup(auth, provider)
     .then((result) => {
-      const user = result.user;
-      console.log('login successed', user);
+      let credential;
+
+      if (provider instanceof GoogleAuthProvider) {
+        credential = GoogleAuthProvider.credentialFromResult(result);
+      } else {
+        credential = GithubAuthProvider.credentialFromResult(result);
+      }
+
+      const accessToken = credential?.accessToken;
+      const user = { ...result.user, accessToken: accessToken };
       return user;
     })
     .catch((error) => {
