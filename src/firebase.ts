@@ -7,7 +7,6 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APPID,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
   projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  databaseURL: import.meta.env.VITE_FIREBASE_DB_URL,
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
