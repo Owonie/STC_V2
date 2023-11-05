@@ -1,6 +1,8 @@
 # STC_V2
 
-STC version up
+STC version up (CRA -> vite + React + Typescript 마이그레이션)
+
+[https://github.com/Owonie/STC]
 
 ## 개요
 
