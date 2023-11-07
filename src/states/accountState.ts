@@ -1,13 +1,8 @@
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
+import { User } from '../type/dataType';
 
 const { persistAtom } = recoilPersist();
-
-export interface UserState {
-  displayName: string;
-  photoURL: string;
-  accessToken: string;
-}
 
 export const authState = atom<boolean>({
   key: 'authState',
@@ -15,8 +10,12 @@ export const authState = atom<boolean>({
   effects_UNSTABLE: [persistAtom],
 });
 
-export const userState = atom<UserState>({
+export const userState = atom<User>({
   key: 'userState',
-  default: { displayName: '', photoURL: '', accessToken: '' },
+  default: {
+    displayName: '',
+    photoURL: '',
+    accessToken: '',
+  },
   effects_UNSTABLE: [persistAtom],
 });
