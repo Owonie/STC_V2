@@ -12,4 +12,5 @@ export type CurrentRoomServer = {
 
 export type RoomServer = {
   roomServerName: string;
+  roomServerUID: string;
 };

@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
   createRoomServer,
+  deleteRoomServer,
   syncRoomServerList,
 } from '../services/roomServerService';
 import { roomServerListState } from '../states/roomServerState';
@@ -13,7 +14,7 @@ const ServerPage = () => {
     useRecoilState(roomServerListState);
   const isAuthed = useRecoilValue(authState);
 
-  const userUID = 'MacsFUmRdKSeVxhL8BIOBNuSL7f1';
+  const userUID = 'Owon';
   useEffect(() => {
     const stopSync = syncRoomServerList(
       userUID,
@@ -31,7 +32,12 @@ const ServerPage = () => {
     <div>
       Server
       {Object.values(roomServerList).map((room) => (
-        <button key={room.roomServerName}>{room.roomServerName}</button>
+        <button
+          key={room.roomServerUID}
+          onClick={() => deleteRoomServer('Owon', room.roomServerUID)}
+        >
+          {room.roomServerName} 제거하기
+        </button>
       ))}
       <div>
         <button onClick={() => createRoomServer('Owon', 'Owon Room')}>
