@@ -16,6 +16,7 @@ export const userState = atom<User>({
     displayName: '',
     photoURL: '',
     accessToken: '',
+    userUID: '',
   },
   effects_UNSTABLE: [persistAtom],
 });

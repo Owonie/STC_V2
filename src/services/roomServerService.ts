@@ -27,16 +27,28 @@ export function syncRoomServerList(userUID: string, onUpdate: OnUpdate) {
   return () => unsub();
 }
 
-export function createRoomServer(userUID: string, roomServerName: string) {
+export function createRoomServer(
+  userUID: string,
+  displayName: string,
+  roomServerName: string
+) {
   addDoc(collection(database, 'RoomServer'), {
-    RoomServerName: roomServerName,
+    roomServerName: roomServerName,
     masterUID: userUID,
     isDeleted: false,
+    userList: {
+      [userUID]: {
+        displayName: displayName,
+        isOnline: true,
+        role: 'master',
+      },
+    },
   }).then((result) => {
     const roomServerListRef = collection(
       database,
       `User/${userUID}/RoomServerList`
     );
+
     setDoc(doc(roomServerListRef, result.id), {
       roomServerName: roomServerName,
       isDeleted: false,
@@ -55,7 +67,7 @@ export function deleteRoomServer(userUID: string, roomServerUID: string) {
     runTransaction(database, async (transaction) => {
       const roomServerListDoc = await transaction.get(roomServerListRef);
       const userDoc = await transaction.get(userRef);
-      if (!roomServerListDoc && !userDoc) {
+      if (!roomServerListDoc || !userDoc) {
         throw 'Something is error on database!';
       }
       transaction
@@ -66,3 +78,5 @@ export function deleteRoomServer(userUID: string, roomServerUID: string) {
     console.error(e);
   }
 }
+
+// export function getRoomServerUserList(roomServerUID: string) {}

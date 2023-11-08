@@ -13,12 +13,14 @@ const MainPage = () => {
       return;
     }
     login(e.currentTarget.name).then((user) => {
+      console.log(user);
       if (user) {
-        const { displayName, photoURL, accessToken } = user;
+        const { displayName, photoURL, accessToken, userUID } = user;
         setUser({
           displayName: displayName ?? '',
           photoURL: photoURL ?? '',
           accessToken: accessToken ?? '',
+          userUID: userUID ?? '',
         });
         setIsAuthed(true);
       }

@@ -6,15 +6,15 @@ import {
   syncRoomServerList,
 } from '../services/roomServerService';
 import { roomServerListState } from '../states/roomServerState';
-import { authState } from '../states/accountState';
+import { authState, userState } from '../states/accountState';
 import { RoomServer } from '../type/dataType';
 
 const ServerPage = () => {
   const [roomServerList, setRoomServerList] =
     useRecoilState(roomServerListState);
   const isAuthed = useRecoilValue(authState);
+  const { userUID, displayName } = useRecoilValue(userState);
 
-  const userUID = 'Owon';
   useEffect(() => {
     const stopSync = syncRoomServerList(
       userUID,
@@ -26,7 +26,7 @@ const ServerPage = () => {
     return () => {
       stopSync();
     };
-  }, [isAuthed, setRoomServerList]);
+  }, [isAuthed, userUID, setRoomServerList]);
 
   return (
     <div>
@@ -34,13 +34,15 @@ const ServerPage = () => {
       {Object.values(roomServerList).map((room) => (
         <button
           key={room.roomServerUID}
-          onClick={() => deleteRoomServer('Owon', room.roomServerUID)}
+          onClick={() => deleteRoomServer(userUID, room.roomServerUID)}
         >
-          {room.roomServerName} 제거하기
+          {room.roomServerName},{room.roomServerUID} 제거하기
         </button>
       ))}
       <div>
-        <button onClick={() => createRoomServer('Owon', 'Owon Room')}>
+        <button
+          onClick={() => createRoomServer(userUID, displayName, 'Owon Room')}
+        >
           방 만들기!
         </button>
       </div>

@@ -4,7 +4,7 @@ import {
   GoogleAuthProvider,
   GithubAuthProvider,
 } from 'firebase/auth';
-import { auth, authProvider } from './firebase';
+import { auth, authProvider } from '../firebase';
 
 export async function login(providerName: string) {
   const provider = getProvider(providerName);
@@ -12,15 +12,20 @@ export async function login(providerName: string) {
   return signInWithPopup(auth, provider)
     .then((result) => {
       let credential;
-
-      if (provider instanceof GoogleAuthProvider) {
+      if (providerName === 'Google') {
         credential = GoogleAuthProvider.credentialFromResult(result);
       } else {
         credential = GithubAuthProvider.credentialFromResult(result);
       }
 
       const accessToken = credential?.accessToken;
-      const user = { ...result.user, accessToken: accessToken };
+
+      const user = {
+        displayName: result.user.displayName,
+        photoURL: result.user.photoURL,
+        userUID: result.user.uid,
+        accessToken: accessToken,
+      };
       return user;
     })
     .catch((error) => {

@@ -3,6 +3,7 @@ export type User = {
   displayName: string;
   photoURL: string;
   accessToken: string;
+  userUID: string;
 };
 
 // room data
