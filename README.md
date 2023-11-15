@@ -3,6 +3,7 @@
 STC version up (CRA -> vite + React + Typescript 마이그레이션)
 
 Repo[구버전]: [https://github.com/Owonie/STC]
+
 작업일지: [https://debonair-quality-71d.notion.site/STC_V2-caef3457fd4f4398b46b71f1df12595c?pvs=4]
 ## 개요
 
