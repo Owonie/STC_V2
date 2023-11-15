@@ -9,7 +9,6 @@ import ServerPage from '../pages/serverPage';
 export const router = createBrowserRouter([
   {
     path: '/',
-
     element: <RootLayout />,
     errorElement: <ErrorPage />,
     children: [
